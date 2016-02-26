@@ -48,6 +48,7 @@ module Associatable
   # Phase IIIb
   def belongs_to(name, options = {})
     belong_options = BelongsToOptions.new(name.to_s, options)
+    assoc_options[name] = belong_options
     define_method(name) do
       model = belong_options.model_class
       belong_id = send(belong_options.foreign_key)
@@ -56,8 +57,7 @@ module Associatable
   end
 
   def has_many(name, options = {})
-    p name
-    many_options = HasManyOptions.new(name.to_s, self.class.name, options)
+    many_options = HasManyOptions.new(name.to_s, self.name, options)
     define_method(name) do
       model = many_options.model_class
       primary = many_options.primary_key
@@ -68,6 +68,7 @@ module Associatable
 
   def assoc_options
     # Wait to implement this in Phase IVa. Modify `belongs_to`, too.
+    @options ||= {}
   end
 end
 
