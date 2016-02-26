@@ -1,5 +1,4 @@
 require_relative '03_associatable'
-require 'byebug'
 
 # Phase IV
 module Associatable
@@ -7,17 +6,18 @@ module Associatable
 
   def has_one_through(name, through_name, source_name)
     through_options = assoc_options[through_name]
-    source_options = through_options.model_class.assoc_options[source_name]
-
-    through_foreign = through_options.foreign_key
-    through_key = through_options.primary_key
-    through_table = through_options.table_name
-
-    source_key = source_options.primary_key
-    source_foreign = source_options.foreign_key
-    source_table = source_options.table_name
 
     define_method(name) do
+      source_options = through_options.model_class.assoc_options[source_name]
+
+      through_foreign = through_options.foreign_key
+      through_key = through_options.primary_key
+      through_table = through_options.table_name
+
+      source_key = source_options.primary_key
+      source_foreign = source_options.foreign_key
+      source_table = source_options.table_name
+
       subject_id = id
       table_name = self.class.table_name
 
